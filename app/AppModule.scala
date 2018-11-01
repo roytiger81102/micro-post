@@ -1,5 +1,5 @@
 import com.google.inject.AbstractModule
-import service.{UserService, UserServiceImpl}
+import services.{UserService, UserServiceImpl}
 
 /**
   * DIの設定を行うクラス
