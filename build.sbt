@@ -18,6 +18,7 @@ libraryDependencies ++= Seq(
   "org.scalikejdbc"        %% "scalikejdbc-jsr310"           % "2.5.2",
   "org.scalikejdbc"        %% "scalikejdbc-test"             % "2.5.2" % Test,
   "org.scalikejdbc"        %% "scalikejdbc-play-initializer" % "2.6.+",
+  "com.github.t3hnar"      %% "scala-bcrypt"                 % "3.1",
   "org.skinny-framework"   %% "skinny-orm"                   % "2.3.7",
   "ch.qos.logback"         % "logback-classic"               % "1.2.3",
   "com.adrianhurt"         %% "play-bootstrap"               % "1.2-P26-B3",
@@ -37,3 +38,6 @@ flywayDriver := envConfig.value.getString("jdbcDriver")
 flywayUrl := envConfig.value.getString("jdbcUrl")
 flywayUser := envConfig.value.getString("jdbcUserName")
 flywayPassword := envConfig.value.getString("jdbcPassword")
+
+// テンプレート上でformのインポートを不要にする
+TwirlKeys.templateImports ++= Seq("forms._")
