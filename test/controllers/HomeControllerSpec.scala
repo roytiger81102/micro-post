@@ -6,7 +6,7 @@ import play.api.test._
 import play.api.test.Helpers._
 
 /**
-  * ホーム画面Controllerのテストクラス
+  * トップページコントローラのテストクラス
   */
 class HomeControllerSpec extends FunSpec
   with MustMatchers
