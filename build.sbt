@@ -19,6 +19,8 @@ libraryDependencies ++= Seq(
   "org.scalikejdbc"        %% "scalikejdbc-test"             % "2.5.2" % Test,
   "org.scalikejdbc"        %% "scalikejdbc-play-initializer" % "2.6.+",
   "com.github.t3hnar"      %% "scala-bcrypt"                 % "3.1",
+  "jp.t2v"                 %% "play2-auth"                   % "0.16.0-SNAPSHOT",
+  "jp.t2v"                 %% "play2-auth-test"              % "0.16.0-SNAPSHOT" % Test,
   "org.skinny-framework"   %% "skinny-orm"                   % "2.3.7",
   "ch.qos.logback"         % "logback-classic"               % "1.2.3",
   "com.adrianhurt"         %% "play-bootstrap"               % "1.2-P26-B3",
