@@ -1,6 +1,6 @@
 @(currentUserOpt: Option[User])(implicit messagesProvider: MessagesProvider, flash: Flash, request: RequestHeader)
 
-@main(Messages("Home"), None) {
+@main(Messages("Home"), currentUserOpt) {
   @if(currentUserOpt.isEmpty) {
     <div class="center jumbotron">
       <div class="text-center">

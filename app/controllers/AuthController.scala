@@ -2,7 +2,7 @@ package controllers
 
 import com.github.t3hnar.bcrypt._
 import forms.Login
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import jp.t2v.lab.play2.auth.LoginLogout
 import play.api.data.Form
 import play.api.data.Forms._
@@ -19,6 +19,7 @@ import scala.concurrent.{ExecutionContext, Future}
   * @param components
   * @param ec
   */
+@Singleton
 class AuthController @Inject()(
   val userService: UserService,
   components: ControllerComponents

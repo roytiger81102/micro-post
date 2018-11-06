@@ -21,7 +21,7 @@ class HomeController @Inject()(val userService: UserService, components: Control
     * 初期表示
     * @return
     */
-  def index() = StackAction { implicit request =>
+  def index(): Action[AnyContent] = StackAction { implicit request =>
     Ok(views.html.index(loggedIn))
   }
 

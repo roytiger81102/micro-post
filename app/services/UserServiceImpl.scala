@@ -28,4 +28,24 @@ class UserServiceImpl extends UserService {
   def findByEmail(email: String)(implicit dbSession: DBSession): Try[Option[User]] = Try {
     User.where('email -> email).apply().headOption
   }
+
+  /**
+    * すべてのユーザー情報を検索取得する
+    * @param dbSession DBセッションオブジェクト
+    * @return 成功時:Success(ユーザー情報のリスト)/失敗時:Failure
+    */
+  def findAll(implicit dbSession: DBSession): Try[List[User]] = Try {
+    User.findAll()
+  }
+
+  /**
+    * IDからユーザー情報を検索取得する
+    * @param id ユーザーのID
+    * @param dbSession DBセッションオブジェクト
+    * @return 成功時:Success(ユーザー情報)/失敗時:Failure
+    */
+  def findById(id: Long)(implicit dbSession: DBSession): Try[Option[User]] = Try {
+    User.findById(id)
+  }
+
 }
