@@ -1,6 +1,6 @@
 package services
 import javax.inject.Singleton
-import models.{MicroPost, PagedItems}
+import models.{MicroPost, PagedItems, UserFollow}
 import scalikejdbc._
 import skinny.Pagination
 
@@ -43,7 +43,7 @@ class MicroPostServiceImpl extends MicroPostService {
     implicit dbSession: DBSession
   ): Try[PagedItems[MicroPost]] =
     countBy(userId).map { size =>
-      PagedItems(pagination, size, findAllByWithLimitOffset(userId)(pagination))
+      PagedItems(pagination, size, findAllByWithLimitOffset(Seq(userId))(pagination))
     }
 
   /**
@@ -57,7 +57,7 @@ class MicroPostServiceImpl extends MicroPostService {
   }
 
   /**
-    * 指定ユーザーの投稿を取得する
+    * タイムライン(自身+フォロワーの投稿)を取得する
     * @param pagination ページ割り情報
     * @param userId ユーザーID
     * @param dbSession DBセッションオブジェクト
@@ -66,14 +66,15 @@ class MicroPostServiceImpl extends MicroPostService {
   override def findAllByWithLimitOffset(pagination: Pagination, userId: Long)(
     implicit dbSession: DBSession
   ): Try[PagedItems[MicroPost]] = Try {
-    val size = MicroPost.countBy(sqls.eq(MicroPost.defaultAlias.userId, userId))
-    PagedItems(pagination, size, findAllByWithLimitOffset(userId)(pagination))
+    val followingIds = UserFollow.findAllBy(sqls.eq(UserFollow.defaultAlias.userId, userId)).map(_.followId)
+    val size = MicroPost.countBy(sqls.in(MicroPost.defaultAlias.userId, userId +: followingIds))
+    PagedItems(pagination, size, findAllByWithLimitOffset(userId +: followingIds)(pagination))
   }
 
-  private def findAllByWithLimitOffset(userId: Long)(pagination: Pagination)(
+  private def findAllByWithLimitOffset(userIds: Seq[Long])(pagination: Pagination)(
     implicit dbSession: DBSession
   ): Seq[MicroPost] = MicroPost.findAllByWithLimitOffset(
-    sqls.eq(MicroPost.defaultAlias.userId, userId),
+    sqls.in(MicroPost.defaultAlias.userId, userIds),
     pagination.limit,
     pagination.offset,
     Seq(MicroPost.defaultAlias.id.desc)
