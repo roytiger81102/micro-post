@@ -1,20 +1,22 @@
-@(currentUser: User, users: Seq[User])(implicit messagesProvider: MessagesProvider, flash: Flash, request: RequestHeader)
+@(currentUser: User, users: PagedItems[User])(implicit messagesProvider: MessagesProvider, flash: Flash, request: RequestHeader)
 
-    <ul class="media-list">
-    @for(otherUser <- users) {
-        <li class="media">
-            <div class="media-left">
-                <img class="media-object img-rounded" src="@common.gravatarUrl(otherUser.email)?s=50&amp;r=g&amp;d=identicon" alt="">
+<ul class="media-list">
+@for(otherUser <- users.items) {
+    <li class="media">
+        <div class="media-left">
+            <img class="media-object img-rounded" src="@common.gravatarUrl(otherUser.email)?s=50&amp;r=g&amp;d=identicon" alt="">
+        </div>
+        <div class="media-body">
+            <div>
+            @otherUser.name
             </div>
-            <div class="media-body">
-                <div>
-                @otherUser.name
-                </div>
-                <div>
-                    <p><a href="@routes.UsersController.show(otherUser.id.get)">@Messages("ViewProfile")</a></p>
-                </div>
+            <div>
+                <p><a href="@routes.UsersController.show(otherUser.id.get, 1)">@Messages("ViewProfile")</a></p>
             </div>
-        </li>
-    }
-    </ul>
+        </div>
+    </li>
+}
+</ul>
+
+@common.pagination(users, routes.UsersController.index)
 

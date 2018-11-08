@@ -1,6 +1,7 @@
 package services
-import models.User
+import models.{PagedItems, User}
 import scalikejdbc.DBSession
+import skinny.Pagination
 
 import scala.util.Try
 
@@ -34,8 +35,12 @@ class UserServiceImpl extends UserService {
     * @param dbSession DBセッションオブジェクト
     * @return 成功時:Success(ユーザー情報のリスト)/失敗時:Failure
     */
-  def findAll(implicit dbSession: DBSession): Try[List[User]] = Try {
-    User.findAll()
+  def findAll(pagination: Pagination)(implicit dbSession: DBSession): Try[PagedItems[User]] = Try {
+    PagedItems[User](
+      pagination,
+      User.countAllModels(),
+      User.findAllWithPagination(pagination, Seq(User.defaultAlias.id.asc))
+    )
   }
 
   /**
